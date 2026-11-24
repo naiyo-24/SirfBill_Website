@@ -1,9 +1,63 @@
 import { Link } from 'react-router-dom';
 
+const demoOptions = [
+  {
+    id: 'restaurant',
+    icon: '🍽️',
+    title: 'Restaurant Billing',
+    description: 'Manage tables, kitchen orders, inventory, and fast restaurant checkout.',
+    price: '₹3,000',
+    color: '#d97706',
+    features: ['Table & floor management', 'Kitchen KOT printing', 'Split bills and payments']
+  },
+  {
+    id: 'custom',
+    icon: '⚙️',
+    title: 'Customized Software',
+    description: 'Get billing workflows, invoices, and fields tailored to your business.',
+    price: '₹3,500',
+    color: '#9333ea',
+    features: ['Custom invoice designer', 'Configurable fields', 'Multi-store sync']
+  },
+  {
+    id: 'medical',
+    icon: '💊',
+    title: 'Medical Billing',
+    description: 'Simplify pharmacy billing, medicine inventory, batches, and expiry tracking.',
+    price: '₹2,500',
+    color: 'var(--primary)',
+    features: ['GST medicine billing', 'Batch and expiry alerts', 'Supplier returns']
+  }
+];
+
 const Demo = () => {
   return (
-    <div style={{ backgroundColor: 'var(--background)', minHeight: '100vh', padding: '5rem 0' }}>
-      <div className="container" style={{ maxWidth: '1200px', display: 'flex', flexWrap: 'wrap', gap: '4rem', alignItems: 'center' }}>
+    <div className="demo-page" style={{ backgroundColor: 'var(--background)', minHeight: '100vh', padding: '5rem 0' }}>
+      <section className="container demo-options">
+        <div className="demo-options-heading">
+          <span className="demo-eyebrow">PERSONALIZED DEMO</span>
+          <h1>Choose your billing solution</h1>
+          <p>Select a solution to view its plans and pricing.</p>
+        </div>
+        <div className="demo-options-grid">
+          {demoOptions.map((option) => (
+            <article className="demo-option-card" key={option.id} style={{ borderTopColor: option.color }}>
+              <div className="demo-option-icon" style={{ backgroundColor: `${option.color}18` }}>{option.icon}</div>
+              <h2>{option.title}</h2>
+              <p>{option.description}</p>
+              <ul>
+                {option.features.map((feature) => <li key={feature}>{feature}</li>)}
+              </ul>
+              <div className="demo-option-footer">
+                <span><strong>{option.price}</strong><small>/ year</small></span>
+                <Link to={`/pricing?plan=${option.id}`} className="btn btn-primary">View pricing →</Link>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <div className="container demo-details" style={{ maxWidth: '1200px', display: 'flex', flexWrap: 'wrap', gap: '4rem', alignItems: 'center' }}>
         
         {/* Left Side: Copy */}
         <div style={{ flex: '1 1 400px' }}>
