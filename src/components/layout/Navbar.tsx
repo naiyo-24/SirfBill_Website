@@ -48,6 +48,8 @@ const solutions = [
 const Navbar = () => {
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem('sirfbill-theme') === 'dark');
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isSolutionsActive = ['/pharmacy', '/restaurant', '/custom-billing', '/crm', '/lab'].some(
@@ -68,7 +70,13 @@ const Navbar = () => {
   // Close dropdown on route change
   useEffect(() => {
     setDropdownOpen(false);
+    setMobileMenuOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = darkMode ? 'dark' : 'light';
+    localStorage.setItem('sirfbill-theme', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
 
   const getLinkStyle = (path: string) => {
     const isActive = location.pathname === path || (path !== '/' && location.pathname.startsWith(path));
@@ -83,8 +91,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav style={{ padding: '0.85rem 0', backgroundColor: '#FFFFFF', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', position: 'sticky', top: 0, zIndex: 100 }}>
-      <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <nav className="site-nav" style={{ padding: '0.85rem 0', backgroundColor: '#FFFFFF', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', position: 'sticky', top: 0, zIndex: 100 }}>
+      <div className="container site-nav-content" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         
         {/* Brand Logo (Links to Home) */}
         <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
@@ -92,7 +100,7 @@ const Navbar = () => {
         </Link>
 
         {/* Central Nav Links */}
-        <div style={{ display: 'flex', gap: '1.75rem', alignItems: 'center', fontWeight: 600, fontSize: '0.95rem' }}>
+        <div className="desktop-nav-links" style={{ display: 'flex', gap: '1.75rem', alignItems: 'center', fontWeight: 600, fontSize: '0.95rem' }}>
           
           {/* Solutions Dropdown Menu */}
           <div 
@@ -142,6 +150,7 @@ const Navbar = () => {
                     position: 'absolute',
                     top: 'calc(100% + 14px)',
                     left: '-80px',
+                    maxWidth: 'calc(100vw - 2rem)',
                     width: '600px',
                     backgroundColor: '#ffffff',
                     borderRadius: '16px',
@@ -244,16 +253,64 @@ const Navbar = () => {
         </div>
 
         {/* Right CTA Actions */}
-        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexShrink: 0 }}>
+        <div className="nav-actions" style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexShrink: 0 }}>
+          <button
+            type="button"
+            className="theme-toggle"
+            onClick={() => setDarkMode((previous) => !previous)}
+            aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+            aria-pressed={darkMode}
+          >
+            <span aria-hidden="true">{darkMode ? '☀️' : '🌙'}</span>
+            <span className="theme-toggle-label">{darkMode ? 'Light' : 'Dark'}</span>
+          </button>
           <button className="btn" style={{ backgroundColor: 'white', color: 'var(--text-primary)', border: '1px solid var(--border)', padding: '0.5rem 1.25rem', height: '40px', fontWeight: 600, fontSize: '0.9rem' }}>
             Login
           </button>
+          <Link to="/demo" className="btn btn-outline get-app-link">
+            Get App
+          </Link>
           <Link to="/demo" className="btn btn-primary" style={{ padding: '0.5rem 1.35rem', borderRadius: '6px', height: '40px', whiteSpace: 'nowrap', fontSize: '0.9rem' }}>
             Request a Demo →
           </Link>
         </div>
 
+        <button
+          type="button"
+          className="mobile-menu-toggle"
+          aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={mobileMenuOpen}
+          onClick={() => setMobileMenuOpen((open) => !open)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
       </div>
+
+      {mobileMenuOpen && (
+        <div className="mobile-nav-panel">
+          <Link to="/features">Features</Link>
+          <Link to="/pricing">Pricing</Link>
+          <Link to="/about">About</Link>
+          <Link to="/contact">Contact</Link>
+          <Link to="/restaurant">Restaurant Billing</Link>
+          <Link to="/custom-billing">Custom Software</Link>
+          <Link to="/pharmacy">Medical Billing</Link>
+          <button
+            type="button"
+            className="theme-toggle"
+            onClick={() => setDarkMode((previous) => !previous)}
+            aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+            aria-pressed={darkMode}
+          >
+            <span aria-hidden="true">{darkMode ? '☀️' : '🌙'}</span>
+            {darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+          </button>
+          <Link to="/demo" className="btn btn-outline">Get App</Link>
+          <Link to="/demo" className="btn btn-primary">Request a Demo →</Link>
+        </div>
+      )}
     </nav>
   );
 };

@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 const pricingPlans = [
   {
+    id: 'medical',
     name: 'Pharmacy Edition',
     price: '2500',
     description: 'Specialized for retail medical stores, chemists, and pharmacies.',
@@ -16,6 +17,7 @@ const pricingPlans = [
     color: 'var(--primary)', // green
   },
   {
+    id: 'restaurant',
     name: 'Restaurant Edition',
     price: '3000',
     description: 'Engineered for cafes, dine-in restaurants, and quick service food joints.',
@@ -30,6 +32,7 @@ const pricingPlans = [
     color: '#d97706', // amber
   },
   {
+    id: 'custom',
     name: 'Custom Enterprise',
     price: '3500',
     description: 'Fully customizable billing software tailored to your specific business logic.',
@@ -46,6 +49,13 @@ const pricingPlans = [
 ];
 
 const Pricing = () => {
+  const [searchParams] = useSearchParams();
+  const selectedPlan = searchParams.get('plan');
+  const visiblePlans = selectedPlan
+    ? pricingPlans.filter((plan) => plan.id === selectedPlan)
+    : pricingPlans;
+  const selectedPlanName = visiblePlans[0]?.name;
+
   return (
     <div style={{ backgroundColor: 'var(--background)' }}>
       {/* Header Section */}
@@ -56,8 +66,9 @@ const Pricing = () => {
             Transparent Pricing
           </div>
           <h1 style={{ fontSize: '3rem', marginBottom: '1rem', color: '#0f172a' }}>
-            Choose the Right Edition for<br />
-            <span style={{ color: 'var(--primary)' }}>Your Business</span>
+            {selectedPlanName
+              ? `${selectedPlanName} Pricing`
+              : <>Choose the Right Edition for<br /><span style={{ color: 'var(--primary)' }}>Your Business</span></>}
           </h1>
           <p style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', maxWidth: '750px', margin: '0 auto' }}>
             No hidden charges. Specialized editions for pharmacies, restaurants, and fully customized business billing.
@@ -68,8 +79,11 @@ const Pricing = () => {
       {/* Pricing Cards */}
       <section style={{ padding: '5rem 0' }}>
         <div className="container">
+          {selectedPlan && visiblePlans.length === 0 && (
+            <p className="pricing-selection-error">That pricing option could not be found. Browse all available editions below.</p>
+          )}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', alignItems: 'center' }}>
-            {pricingPlans.map((plan, idx) => (
+            {(visiblePlans.length > 0 ? visiblePlans : pricingPlans).map((plan, idx) => (
               <div 
                 key={idx} 
                 style={{ 
@@ -149,6 +163,13 @@ const Pricing = () => {
       {/* FAQ Teaser */}
       <section style={{ padding: '4rem 0 6rem', textAlign: 'center' }}>
         <div className="container">
+          {selectedPlan && (
+            <p style={{ marginBottom: '1.5rem' }}>
+              <Link to="/pricing" style={{ color: 'var(--primary)', fontWeight: 'bold', textDecoration: 'none' }}>
+                ← View all pricing plans
+              </Link>
+            </p>
+          )}
           <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
             Have questions about our pricing?
           </p>

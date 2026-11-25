@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 
 const HeroSection = () => {
   return (
-    <section id="home" style={{ padding: '4rem 0', position: 'relative', overflow: 'visible' }}>
-      <div className="container" style={{ display: 'flex', alignItems: 'center', gap: '2rem', position: 'relative', zIndex: 1, flexWrap: 'wrap' }}>
+    <section id="home" className="home-hero" style={{ padding: '4rem 0', position: 'relative', overflow: 'visible' }}>
+      <div className="container home-hero-content" style={{ display: 'flex', alignItems: 'center', gap: '2rem', position: 'relative', zIndex: 1, flexWrap: 'wrap' }}>
         
         {/* Left Content */}
         <div style={{ flex: '1 1 500px' }}>
@@ -39,7 +39,7 @@ const HeroSection = () => {
           </motion.p>
 
           {/* Features Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', marginBottom: '2.5rem' }}>
+          <div className="hero-feature-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', marginBottom: '2.5rem' }}>
             {[
               { icon: '💊', title: 'Pharmacy POS', sub: 'Batch & Expiry', color: '#22c55e' },
               { icon: '🍽️', title: 'Restaurant POS', sub: 'Tables & KOT', color: '#f59e0b' },
@@ -69,7 +69,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.7 }}
-            className="flex gap-4 items-center"
+            className="flex gap-4 items-center hero-cta"
           >
             <Link to="/demo" className="btn btn-primary" style={{ padding: '1rem 2rem', fontSize: '1.1rem', borderRadius: '50px', boxShadow: '0 4px 14px rgba(34,197,94,0.4)' }}>Request a Free Demo →</Link>
             <button className="btn" style={{ padding: '1rem 2rem', fontSize: '1.1rem', borderRadius: '50px', backgroundColor: 'white', border: '1px solid var(--border)', color: '#1e293b', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.02)' }}>
@@ -83,6 +83,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+          className="hero-dashboard"
           style={{ flex: '1 1 500px', position: 'relative', perspective: '1000px', padding: '1rem', display: 'flex', justifyContent: 'flex-end' }}
         >
             <style>
@@ -94,7 +95,7 @@ const HeroSection = () => {
                 }
               `}
             </style>
-            <img src="/images/home.png" alt="SirfBill Dashboard Mockup" style={{ 
+            <img className="hero-dashboard-image" src="/images/home.png" alt="SirfBill Dashboard Mockup" style={{
               width: '110%', 
               maxWidth: '750px', 
               height: 'auto', 
