@@ -49,6 +49,7 @@ const Navbar = () => {
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileSolutionsOpen, setMobileSolutionsOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('sirfbill-theme') === 'dark');
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -129,23 +130,33 @@ const Navbar = () => {
               }}
             >
               Solutions
-              <motion.span
-                animate={{ rotate: dropdownOpen ? 180 : 0 }}
-                transition={{ duration: 0.2 }}
-                style={{ fontSize: '0.75rem', display: 'inline-block' }}
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{
+                  transition: 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.2s ease',
+                  transform: dropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                  opacity: 0.8
+                }}
               >
-                ▼
-              </motion.span>
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
             </button>
 
             {/* Dropdown Card */}
             <AnimatePresence>
               {dropdownOpen && (
                 <motion.div
-                  initial={{ opacity: 0, y: 12, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                  transition={{ duration: 0.2 }}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 6 }}
+                  transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
                   style={{
                     position: 'absolute',
                     top: 'calc(100% + 14px)',
@@ -290,13 +301,66 @@ const Navbar = () => {
 
       {mobileMenuOpen && (
         <div className="mobile-nav-panel">
-          <Link to="/features">Features</Link>
-          <Link to="/pricing">Pricing</Link>
-          <Link to="/about">About</Link>
-          <Link to="/contact">Contact</Link>
-          <Link to="/restaurant">Restaurant Billing</Link>
-          <Link to="/custom-billing">Custom Software</Link>
-          <Link to="/pharmacy">Medical Billing</Link>
+          {/* Solutions Accordion in Mobile */}
+          <div className="mobile-solutions-section">
+            <button
+              type="button"
+              className="mobile-solutions-toggle"
+              onClick={() => setMobileSolutionsOpen((prev) => !prev)}
+            >
+              <span>Solutions</span>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{
+                  transition: 'transform 0.25s ease',
+                  transform: mobileSolutionsOpen ? 'rotate(180deg)' : 'rotate(0deg)'
+                }}
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+
+            {mobileSolutionsOpen && (
+              <div className="mobile-solutions-list">
+                {solutions.map((item, idx) => (
+                  <Link
+                    key={idx}
+                    to={item.path}
+                    className="mobile-solution-item"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <span className="mobile-solution-icon" style={{ backgroundColor: item.iconBg }}>
+                      {item.icon}
+                    </span>
+                    <div>
+                      <div className="mobile-solution-title">
+                        {item.title}
+                        <span
+                          className="mobile-solution-badge"
+                          style={{ color: item.badgeColor, backgroundColor: item.badgeBg }}
+                        >
+                          {item.badge}
+                        </span>
+                      </div>
+                      <div className="mobile-solution-desc">{item.desc}</div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <Link to="/features" onClick={() => setMobileMenuOpen(false)}>Features</Link>
+          <Link to="/pricing" onClick={() => setMobileMenuOpen(false)}>Pricing</Link>
+          <Link to="/about" onClick={() => setMobileMenuOpen(false)}>About</Link>
+          <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
           <button
             type="button"
             className="theme-toggle"
@@ -307,8 +371,10 @@ const Navbar = () => {
             <span aria-hidden="true">{darkMode ? '☀️' : '🌙'}</span>
             {darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
           </button>
-          <Link to="/demo" className="btn btn-outline">Get App</Link>
-          <Link to="/demo" className="btn btn-primary">Request a Demo →</Link>
+          <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem', width: '100%' }}>
+            <Link to="/demo" className="btn btn-outline" style={{ flex: 1, textAlign: 'center' }} onClick={() => setMobileMenuOpen(false)}>Get App</Link>
+            <Link to="/demo" className="btn btn-primary" style={{ flex: 1, textAlign: 'center' }} onClick={() => setMobileMenuOpen(false)}>Request a Demo →</Link>
+          </div>
         </div>
       )}
     </nav>

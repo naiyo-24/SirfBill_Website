@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const HeroSection = () => {
   return (
-    <section id="home" className="home-hero" style={{ padding: '4rem 0', position: 'relative', overflow: 'visible' }}>
+    <section id="home" className="home-hero" style={{ padding: '4rem 0', position: 'relative', overflow: 'hidden' }}>
       <div className="container home-hero-content" style={{ display: 'flex', alignItems: 'center', gap: '2rem', position: 'relative', zIndex: 1, flexWrap: 'wrap' }}>
         
         {/* Left Content */}

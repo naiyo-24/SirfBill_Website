@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer style={{ backgroundColor: '#0f172a', color: '#f8fafc', padding: '5rem 0 2rem' }}>
       <div className="container">
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: '2rem', marginBottom: '4rem' }}>
+        <div className="footer-grid">
           
           {/* Brand Column */}
           <div>
